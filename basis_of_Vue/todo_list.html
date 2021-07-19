@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="../js/vue.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<!--v-model:数据的双向绑定,这里指将“input”里的“value"值和“app”里的“inputValue”做了绑定
+			即当input框里的“value”发生变化时，vue实例app里的inputValu就会发生变化，反之亦然 -->
+			<input type="text" v-model="inputValue" />  
+			<button v-on:click="handleBtnClick">提交</button>   <!-- v-on:绑定事件 -->
+			<ul>
+				<!-- v-for:负责迭代各种数据 -->
+<!-- 			<li v-for="item in list">{{item}}</li> -->	
+		<!-- 在循环list时，将list的每一项赋值给item，然后将item由v-bind的语法
+		  通过content传给子组件todo-item
+		  -->
+				<!-- v-bind:父组件与子组件进行通信
+					v-bind:可以简写为:
+				-->
+				<todo-item v-bind:content="item"  
+						   v-bind:index="index"
+						   v-for="(item,index) in list"
+						   @delete="handleItemDelete"> <!-- 在父组件的模板中监听子组件的delete事件-->
+				</todo-item>
+			</ul>
+		</div>
+		<script>
+			//组件化编写方式
+			//全局组件
+			// Vue.component("TodoItem",{  //创建全局组件TodoItem(大写)
+			// 	props: ['content'],    //指从父组件接收什么样的内容
+			// 	template: '<li>{{content}}</li>'  //内容为<li>标签内容 ，内容必须用差值表达式表示，而不是"<li>"+this.content+"</li>"
+			// })
+			
+			//定义局部组件TodoItem
+			var TodoItem = {
+				props: ['content','index'], //子组件接收父组件的传值
+				//子组件调用父组件 绑定事件v-on:click相当于@click
+				template: "<li @click=handleItemClick>{{content}}</li>",
+				methods:{
+					handleItemClick: function(index){
+						//alert("click")
+						//$emit:子组件与父组件进行通信，子组件触发父组件事件delete
+						//凡是以$开头的东西指的都是Vue的实例属性，或实例方法  
+						this.$emit("delete",this.index); 
+					}
+				}
+			}
+		
+			var app = new Vue({
+				el: '#app', 
+				components:{
+					TodoItem: TodoItem //局部组件TodoItem必须注册后才能使用
+				}, 
+				data: {
+					list: [],
+					inputValue: ''
+				},
+				methods: {
+					handleBtnClick: function(){
+						this.list.push(this.inputValue) //将输入框的内容写入到列表中
+						//alert(this.inputValue)
+						this.inputValue = ''   //每次输入后将输入框清空
+					},
+					handleItemDelete: function(index){
+						//alert("delete");
+						this.list.splice(index,1);
+					}
+				}	
+			})
+		</script>
+	</body>
+</html>

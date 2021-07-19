@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Vue 实例</title>
+		<script src="../js/vue.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	<body>
+		<div id="root"> <!-- V(View)层：尽量只负责显示，不写代码逻辑-->
+			<div v-on:click="handleClick"> <!-- "v-on:"负责绑定一个事件-->
+				{{content}}  <!-- 差值表达式会自动到M层寻找data内容-->
+			</div>
+			<item></item>
+		</div>
+		
+		
+		<script> 	//M层(Model)所有的逻辑写在这里
+			//Vue中的每一个组件也是一个Vue实例
+			Vue.component("item",{  //定义一个组件'item',Vue底层也会将其编译成Vue实例
+				template: '<div>Hello item</div>'  //让其显示某个标签的内容 
+			})
+	//创建一个 根 实例(程序入口，是一个Vue实例)，让其接管页面上某一个dom的渲染工作	
+			var vm = new Vue({ 
+				el: '#root', 	//el:(element)接管的负责渲染的标签
+				data:{
+					content: "hahahaha"   //标签内的数据
+				},
+				methods:{
+					handleClick: function(){
+						alert("Haha, U've got it!");
+					}
+				}
+			})
+		</script>
+	</body>
+	
+</html>

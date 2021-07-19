@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>计算属性、方法和监听器</title>
+		<script type="text/javascript" src="../js/vue.js" charset="UTF-8"></script>
+	</head>
+	<body>
+<!-- 		<div id="app">{{firstName + " " + lastName}}</div>
+		此种方法弃用，因为尽量不要在V层涉及业务逻辑，让其只负责显示
+ -->	
+		<div id="app">
+		<!--	{{fullName()}}  //加()说明其是一个方法 -->
+			{{fullName}}
+			{{age}}
+		</div>
+		<script>
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					firstName: 'Mchigen',
+					lastName: 'Lafity',
+					fullName: 'Mchigen Lafity',
+					age: 28
+				},
+				//计算属性computed: 其是 内置缓存的(计算属性fullName依赖于firstName和lastName,
+				//当他们俩不改变时，计算属性就不会重新计算了，有利于提高性能)
+				/* computed:{
+					fullName: function(){
+						console.log("计算了一次");
+						return this.firstName+ " " 
+						+ this.lastName;
+					}
+				}*/
+				
+				//方法methods：无缓存属性
+				/* methods:{
+					fullName: function(){
+						console.log("计算了一次");
+						return this.firstName + ""
+							+ this.lastName;
+					}
+				}, */
+				
+				//监听器watch:也会有缓存机制，但是语法比计算属性(computed)复杂
+				watch:{
+					firstName: function(){
+						console.log("计算了一次");
+						this.fullName = this.firstName + " " + this.lastName;
+					},
+					lastName: function(){
+						console.log("计算了一次");
+						this.fullName = this.firstName + " " + this.lastName;
+					}
+				}
+			}) 
+			
+		</script>
+	</body>
+</html>

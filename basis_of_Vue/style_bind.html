@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Vue的样式绑定</title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			/* 2 .activated{
+				color: red;
+			} */
+		</style>
+	</head>
+	<body>
+		<div id="app">
+	<!-- div元素绑定了一个activated类，这个类是否执行取决于isActivated -->
+			<!--   1.class的对象绑定方式 
+			<div @click="handleDivClick"
+				:class="{activated: isActivated}">
+				Hello world
+			</div>-->
+			
+			<!-- 2.class的数组绑定形式 -->
+	<!-- div绑定一个class，这个class到底显示什么由数组里的activated变量来决定
+			<div @click="handleDivClick()"
+				 :class="[activated]">
+				Michgen Lafity
+			</div>-->
+			
+			<!-- 3.改变style样式，通过内联方式编写 -->
+			<div :style="styleObj"
+				 @click="handleDivClick">
+				Hello world
+			</div>
+		</div>
+		
+		<script>
+			var vm = new Vue({
+				el: '#app',
+				data:{
+					//1.  isActivated: false,
+					//2.  activated: "",
+					styleObj: {
+						color: "black",
+					},
+				},
+				methods:{
+					 handleDivClick: function(){
+						//1.  this.isActivated = !this.isActivated;
+						/*2. if(this.activated === "activated"){
+							this.activated = "";
+						}
+						else{
+							this.activated = "activated";
+						}  换成*/
+						//2. this.activated = (this.activated === "activated") ? "" : "activated";
+						this.styleObj.color = (this.styleObj.color === "black") ? "red" : "black";
+					},
+				},
+			})
+		</script>
+	</body>
+</html>

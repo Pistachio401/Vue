@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Hello World!</title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">{{content}}</div>   <!--差值表达式{{}}，调用data里面对应的数据-->
+		<script>
+			// var dom = document.getElementById("app");
+			// dom.innerHTML = "hello world";
+			
+			// setTimeout(function(){
+			// 	dom.innerHTML = 'haha look at me';
+			// },2000);
+			
+			var app = new Vue({  //创建一个vue实例
+				el: '#app',  //接受一些配置项，el为实例负责管理的区域,限制了一个vue实例处理的dom范围
+				data: {   //定义一些数据
+					content: 'hello world'
+				}
+			})
+			setTimeout(function(){
+				app.$data.content = 'haha look at me'
+			}, 2000)
+		</script>
+	</body>
+</html>

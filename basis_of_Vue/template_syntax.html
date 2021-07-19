@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Vue模板语法</title>
+		<script src="../js/vue.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	<body>
+		<div id="app">
+<!-- 当Vue指令后面跟着一个值的时候，这个值就不是一个字符串了，而是一个JS表达式 -->
+			{{name + " Lee"}} <!-- 差值表达式({{}})语法,实则与v-text的作用一模一样-->
+			<div v-text="name + ' Lee'"></div> <!-- 让div标签里的innerText与name变量进行绑定-->
+			<div v-html="name + ' Lee'"></div> <!-- 让div标签里的innerHtml与name绑定,"Lee"也是一个差值表达式-->
+		</div>
+		
+		<script>
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					name: '<h1>Lesili</hi>'
+				}
+			})
+		</script>
+	</body>
+	
+	
+</html>
