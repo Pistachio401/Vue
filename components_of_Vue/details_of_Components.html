@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Vue组件使用中的细节</title>
+		<script src="../js/vue.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	<body>
+		<div id="root">
+		<!--<table>
+				<tbody>
+		1、使用is属性解决模板标签上出现的bug问题
+		  eg: tr与td处于同一级别，ul/ol与li标签处于同一级别
+			  select与option标签处于同一级别
+		  
+					<tr>-->
+						<!-- 错误，会导致td标签与tr标签处于同一级别
+						
+						<row></row>
+						<row></row> 
+						
+						即显示为：<tr></tr>
+								 <td></td>
+								 <td></td>
+						
+						
+						<td is="row"></td>
+						<td is="row"></td>
+						<td is="row"></td>
+					</tr>
+					
+				</tbody>
+			</table>-->
+			
+			<!-- 3.ref:
+				1).当ref使用在一个标签上的时候，通过this.$refs.refName实际上是
+					标签对应的dom元素。
+				
+			
+			 给div起了一个引用的名字为hello
+			<div @click="handleClick"
+				 ref="hello">
+				 Hello World
+			</div>
+			
+			2).而当在组件上使用ref时，通过this.$refs.refName获取到的内容实际上是
+			子组件(eg；counter)的引用
+			-->
+			<counter ref='countOne' @change="handleChange"></counter>
+			<counter ref='countTwo' @change="handleChange"></counter>
+			<div>{{total}}</div>
+		</div>
+		
+		<script>
+		//3.
+			Vue.component('counter',{
+				data: function(){
+					return {
+						number: 0,
+					}
+				},
+				template: '<div @click="handleClick">{{number}}</div>',
+				methods:{
+					handleClick: function(){
+						this.number++;
+						this.$emit('change')
+					}
+				}
+			})
+		
+		/* 2.而在子组件中定义data时，后面跟的值必须为一个函数，
+		因为其不像根组件，只会被调用一次。
+		目的是使得每个子组件拥有一个独立的数据储存
+		 
+			Vue.component('row',{
+				data: function(){
+					return{
+						content: 'This is a content',
+					}
+				},
+				template: '<tr><td>{{content}}</td></tr>',
+				
+			})*/
+			
+			/* 2.当在根组件中定义data时，后面跟的值可以是键值对/对象
+			 */
+			var vm = new Vue({
+				el: '#root',
+				data: {
+					total: 0,
+				},
+				methods:{
+					/* handleClick: function(){
+					//this.$refs.hello: 在所有引用中找到hello这个引用
+						alert(this.$refs.hello.innerHTML);
+					}, */
+					handleChange: function(){
+						this.total = this.$refs.countOne.number + this.$refs.countTwo.number;
+					}
+				},
+				
+			})
+		</script>
+	</body>
+</html>

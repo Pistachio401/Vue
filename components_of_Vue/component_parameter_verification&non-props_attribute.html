@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>组件参数校验与非props属性</title>
+		<script src="../js/vue.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	
+	<body>
+		<div id='root'>
+			<child content="Hello world"></child>
+		</div>
+		 
+	<!-- 
+		props属性：父组件传，子组件需要接收，然后可以直接用父组件传递过来的数据
+			同时props属性不会把属性直接显示在dom标签之中
+		非props属性：父组件传，子组件不接收，子组件中无法使用父组件传递的内容
+					非props属性对应的属性值会显示在子组件对应的最外层标签的HTML中
+	 -->
+ 
+		<script>
+			Vue.component('child',{
+				props: {
+/* 	组件的参数校验：子组件接收什么参数是有一些规则可定义的
+子组件接收的content属性必须为string类型或者数字类型
+ */					
+					//content: [String, Number],
+					type: String,
+					// required: false,
+					// default: 'default value',
+					
+					//传递的内容必须为string类型，且长度必须大于5
+					validator: function(value){
+						return (value.length > 5);
+					}
+				},
+				template: '<div>{{content}}</div>'
+			})
+			
+			var vm = new Vue({
+				el: '#root',
+				data:{
+					
+				},
+				methods:{
+					
+				},
+				
+			})
+		</script>
+	</body>
+
+</html>

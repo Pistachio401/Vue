@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>父子组件之间的数据传递</title>
+		<script src="../js/vue.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	<body>
+		<div id="root">
+	<!-- 1.父组件向子组件传值：父组件通过属性的方式向子组件传递数据 
+		count后面跟的是一个字符串，count="0"被解析成字符串"0"
+		:count后面跟的是一个js表达式,:count="0"被解析成数字0
+	-->
+			<counter :count="0" @change='handleChange'></counter>
+			<counter :count="1" @change='handleChange'></counter>
+			
+	<!-- 2.子组件向父组件传值： -->
+			<div>{{total}}</div>
+		</div>
+		
+		<script>
+			
+			var counter = {
+				props: ['count'],
+				data: function(){
+					return {
+		//传递过来的属性不要直接修改，而是复制一个副本
+		//是为了避免其他子组件引用该属性时发生错误
+						number: this.count
+					}
+				},
+				template: '<div @click="handleClick">{{number}}</div>',
+				methods: {
+					handleClick: function(){
+						this.number = this.number + 2;
+						this.$emit('change',2);  //传递一个参数2
+					}
+				}
+				
+			}
+		
+			var vm = new Vue({
+				el: '#root',
+				components:{
+					counter: counter,
+					
+				},
+				data:{
+					total: 1
+				},
+				methods:{
+					//父组件可以接收到这个参数
+					handleChange: function(step){
+						this.total += step;
+					}
+				},
+				
+			})
+		</script>
+	</body>
+</html>
